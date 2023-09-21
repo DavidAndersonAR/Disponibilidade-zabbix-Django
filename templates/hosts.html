@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    {% block title %}
+    TESTE
+   {% endblock%}
+</head>
+<body>
+    
+    {% block content %}
+
+    <h1>Selecione um grupo de hosts:</h1>
+
+    <form>
+        <select id="grupo-select" onchange="atualizarHosts()">
+            <option value="">Selecione um grupo</option>
+            {% for grupo in grupos %}
+                <option value="{{ grupo.groupid }}">{{ grupo.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <div id="hosts-container">
+        <!-- Os hosts selecionados aparecerão aqui -->
+        <label for="hosts-select">Escolha um host:</label>
+        <select id="hosts-select"></select>
+    </div>
+
+    <script>
+        
+        function atualizarHosts() {
+            const selectedGroup = document.getElementById('grupo-select').value;
+            const hostsSelect = document.getElementById('hosts-select');
+            hostsSelect.innerHTML = '';  // Limpa o conteúdo anterior
+    
+            if (selectedGroup) {
+                fetch(`/api/obter_hosts_por_grupo/${selectedGroup}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.hosts.length === 0) {
+                            const option = document.createElement('option');
+                            option.text = 'Nenhum host encontrado para este grupo.';
+                            hostsSelect.appendChild(option);
+                        } else {
+                            data.hosts.forEach(host => {
+                                const option = document.createElement('option');
+                                option.value = host.hostid;  // Use o hostid como valor
+                                option.text = host.name;
+                                hostsSelect.appendChild(option);
+                            });
+                        }
+                    });
+            }
+        }
+    </script>
+
+    {% endblock%}
+</body>
+</html>

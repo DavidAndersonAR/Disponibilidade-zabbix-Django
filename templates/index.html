@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    {% block title %}
+    TESTE
+   {% endblock%}
+</head>
+<body>
+    
+    {% block content %}
+
+        <h1>Grupos de Hosts</h1>
+
+        <select id="select-grupos" style="width: 300px;" multiple>
+            {% for grupo in grupos %}
+                <option value="{{ grupo.groupid }}">{{ grupo.name }}</option>
+            {% endfor %}
+        </select>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#select-grupos').select2();
+            });
+        </script>
+
+
+
+    {% endblock%}
+</body>
+</html>
