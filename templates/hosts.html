@@ -5,29 +5,131 @@
     {% block title %}
     TESTE
    {% endblock%}
+
 </head>
 <body>
+
     
     {% block content %}
 
-    <h1>Selecione um grupo de hosts:</h1>
+    <h3>Selecione um grupo de hosts:</h3>
+    <div id="container-center" class="container-center" >
+        <div class="grupo-select">   
+            <form>
+                <select id="grupo-select" class="grupo-select" onchange="atualizarHosts()">
+                    <option value="">Selecione um grupo</option>
+                    {% for grupo in grupos %}
+                        <option value="{{ grupo.groupid }}">{{ grupo.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
 
-    <form>
-        <select id="grupo-select" onchange="atualizarHosts()">
-            <option value="">Selecione um grupo</option>
-            {% for grupo in grupos %}
-                <option value="{{ grupo.groupid }}">{{ grupo.name }}</option>
-            {% endfor %}
-        </select>
-    </form>
 
-    <div id="hosts-container">
-        <!-- Os hosts selecionados aparecerão aqui -->
-        <label for="hosts-select">Escolha um host:</label>
-        <select id="hosts-select"></select>
+        <div id="hosts-container" class="hosts-container">
+            <!-- Os hosts selecionados aparecerão aqui -->
+            <form action="">
+                <label for="hosts-select">Escolha um host:</label>
+                <select name = "hosts" id="hosts-select" placeholder="valor"></select>
+                <div class="input-group-append" id="botao">
+                    <button class="btn btn-primary" type="submit">OK</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="linha"></div>
+
+    
+
+
+    <div >  
+             <!-- Adicione isso onde você deseja que o gráfico seja exibido -->
+        <canvas id="grafico-disponibilidade"></canvas>
     </div>
 
+    
+
+
+
+
+
+
+    
+
     <script>
+        function criarGraficoDisponibilidade() {
+            const dados = obterDadosDisponibilidade();
+            const labels = dados.map((_, index) => `Hora ${index + 1}`);
+            
+            const ctx = document.getElementById('grafico-disponibilidade').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Disponibilidade',
+                        data: dados,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        pointRadius: 5,
+                        pointBackgroundColor: dados.map(point => point === 1 ? 'green' : 'red')
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1.2
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 20
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Chame a função para criar o gráfico quando a página carregar
+        window.onload = criarGraficoDisponibilidade;
+
+
+
+
+
+        function obterDadosDisponibilidade() {
+            // Dados de disponibilidade (1 para disponível, 0 para indisponível)
+            return [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1];
+        }
+    
+        function filtrarGrupos() {
+            const input = document.getElementById('grupo-filtro');
+            const filter = input.value.toLowerCase();
+            const grupos = document.querySelectorAll('#grupo-select option');
+
+            grupos.forEach(option => {
+                const groupName = option.text.toLowerCase();
+                if (groupName.includes(filter)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+    document.getElementById('grupo-filtro').addEventListener('input', filtrarGrupos);
+    document.getElementById('grupo-select').addEventListener('change', function () {
+        atualizarHosts();
+        filtrarGrupos();  // Garante que a filtragem é aplicada ao selecionar um grupo
+    });
         
         function atualizarHosts() {
             const selectedGroup = document.getElementById('grupo-select').value;

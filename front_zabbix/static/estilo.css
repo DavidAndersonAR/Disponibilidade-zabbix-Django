@@ -1,0 +1,75 @@
+
+.hosts-container,
+.grupo-select,
+#botao
+{
+
+    display: inline-block;
+    width: 50%;
+
+}
+#content{
+    
+    flex-direction: row;
+    white-space: nowrap;
+}
+
+/* Estilize o select */
+select {
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* Estilize as opções do select */
+    select option {
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+}
+
+/* Estilize a seta do select */
+select::-ms-expand {
+    display: none;
+}
+
+select::after {
+    content: '\25BC';
+    font-size: 16px;
+    color: #666;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    pointer-events: none;
+}
+
+/* Estilize o hover do select */
+select:hover {
+    border-color: #999;
+}
+
+/* Estilize o focus do select */
+select:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+.linha{
+    background-color: #333;
+    border: 1px solid rgb(12, 12, 12);
+}
+
+
+#grafico-disponibilidade {
+    
+    width: 1200px;
+    height: 400px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+

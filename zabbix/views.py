@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from pyzabbix import ZabbixAPI
+from zabbix.func import recebe_host, disponibilidade
+
 
 
 # Create your views here.
@@ -40,11 +42,22 @@ def hosts_por_grupo(request):
     # conectar ao zabbix
     
     grupos = zapi.hostgroup.get(output=["name", "groupid"])
+    host = request.GET.get('hosts')
+    recebe_host(host)
+
+
+    
+    disponibilidade()
+    print(f"Aqui é o host {host}")
 
     contexto = {
         "grupos" : grupos
     }
     return render(request, "hosts.html", contexto)
+
+
+
+
 
 
 def obter_hosts_por_grupo(request, grupo):
