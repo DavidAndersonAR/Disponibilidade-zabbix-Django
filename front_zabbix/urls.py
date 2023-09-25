@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from zabbix.views import index, hosts_por_grupo, obter_hosts_por_grupo
+from zabbix.views import index, hosts_por_grupo, obter_hosts_por_grupo, disponibilidade_selecionada
 
 urlpatterns = [
     path("zabbix/", include("zabbix.urls")),
@@ -25,4 +25,5 @@ urlpatterns = [
     #path("hosts/", obter_hosts, name="obter_hosts" ),
     path('', hosts_por_grupo, name='hosts_por_grupo'),
     path('api/obter_hosts_por_grupo/<str:grupo>/', obter_hosts_por_grupo, name='obter_hosts_por_grupo'),
+    path('disponibilidade_selecionada/', disponibilidade_selecionada, name='disponibilidade_selecionada')
 ]

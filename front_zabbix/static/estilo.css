@@ -1,11 +1,12 @@
 
 .hosts-container,
 .grupo-select,
-#botao
+#botao,
+.calendario
 {
 
     display: inline-block;
-    width: 50%;
+    width: 30%;
 
 }
 #content{

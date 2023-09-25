@@ -31,12 +31,20 @@
             <form action="">
                 <label for="hosts-select">Escolha um host:</label>
                 <select name = "hosts" id="hosts-select" placeholder="valor"></select>
+
+                <label for="data_inicial">Data de inicio</label>
+                <input type="datetime-local" name="data_inicial" id="data_inicial">
+                <label for="data_final">Data de inicio</label>
+                <input type="datetime-local" name="data_final" id="data_inicial">
+
                 <div class="input-group-append" id="botao">
-                    <button class="btn btn-primary" type="submit">OK</button>
+                    <button class="btn btn-primary" type="submit" >Salvar</a></button>
                 </div>
             </form>
 
         </div>
+
+
 
     </div>
     <div class="linha"></div>
@@ -44,14 +52,53 @@
     
 
 
-    <div >  
-             <!-- Adicione isso onde você deseja que o gráfico seja exibido -->
+    <div >
         <canvas id="grafico-disponibilidade"></canvas>
+    </div>
+
+
+    <div class="trans_borde">
+        <div class="table-responsive">
+             <table class="table table-striped" id="myTable">
+                 <thead>
+                     <tr>
+                         <th>ID</th>
+                         <th>Ambiente</th>
+                         <th>Sonda</th>
+                         <th>Localidade</th>
+                         <th>Host</th>
+                         <th>Sensor</th>
+                         <th>Disponibilidade (%)</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     {% for item in avail_data %}
+                         <tr>
+                             <td>{{ item.id }}</td>
+                             <td>{{ item.ambiente }}</td>
+                             <td>{{ item.sonda }}</td>
+                             <td>{{ item.localidade }}</td>
+                             <td>{{ item.NOME }}</td>
+                             <td>{{ item.SENSOR }}</td>
+                             <td>{{ item.percent_availability }}</td>
+                         </tr>
+                            <script>
+                                var teste = {{item.valor}}
+                                console.log(teste)
+                            </script>
+                        
+                     {% endfor %}
+                 </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     
 
-
+    <script>
+        var teste = teste
+    </script>
 
 
 
@@ -59,8 +106,13 @@
     
 
     <script>
+
+
+
+
+
         function criarGraficoDisponibilidade() {
-            const dados = obterDadosDisponibilidade();
+            const dados = teste;
             const labels = dados.map((_, index) => `Hora ${index + 1}`);
             
             const ctx = document.getElementById('grafico-disponibilidade').getContext('2d');
@@ -101,15 +153,13 @@
         // Chame a função para criar o gráfico quando a página carregar
         window.onload = criarGraficoDisponibilidade;
 
-
-
-
-
+  
         function obterDadosDisponibilidade() {
-            // Dados de disponibilidade (1 para disponível, 0 para indisponível)
-            return [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1];
+            return [1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1]
         }
+
     
+
         function filtrarGrupos() {
             const input = document.getElementById('grupo-filtro');
             const filter = input.value.toLowerCase();
@@ -125,11 +175,11 @@
             });
         }
 
-    document.getElementById('grupo-filtro').addEventListener('input', filtrarGrupos);
-    document.getElementById('grupo-select').addEventListener('change', function () {
-        atualizarHosts();
-        filtrarGrupos();  // Garante que a filtragem é aplicada ao selecionar um grupo
-    });
+        document.getElementById('grupo-filtro').addEventListener('input', filtrarGrupos);
+        document.getElementById('grupo-select').addEventListener('change', function () {
+            atualizarHosts();
+            filtrarGrupos();  // Garante que a filtragem é aplicada ao selecionar um grupo
+        });
         
         function atualizarHosts() {
             const selectedGroup = document.getElementById('grupo-select').value;
