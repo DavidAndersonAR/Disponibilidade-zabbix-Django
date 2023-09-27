@@ -73,10 +73,9 @@ def hosts_por_grupo(request):
     
 
 
-    avail_data = disponibilidade()
+  
     contexto = {
-        "grupos" : grupos,
-        "avail_data" : avail_data
+        "grupos" : grupos     
     }
    
     return render(request, "hosts.html", contexto)
@@ -105,9 +104,20 @@ def obter_hosts_por_grupo(request, grupo):
 
 
 def disponibilidade_selecionada(request):
+    try:
+        zapi = ZabbixAPI("http://10.71.1.69/zabbix")
+        zapi.login("Admin", "26143024")
+        
+    except Exception as e:
+        print("Erro ao fazer login:", e)
 
-
-    #avail_data = disponibilidade()
-    return render(request, "hosts.html")
+    grupos = zapi.hostgroup.get(output=["name", "groupid"])
+    avail_data = disponibilidade()
+    contexto = {
+        "avail_data" : avail_data,  
+        "grupos" : grupos   
+    }
+   
+    return render(request, "hosts.html", contexto)
     
 

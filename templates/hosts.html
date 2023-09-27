@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    
     {% block content %}
 
     <h3>Selecione um grupo de hosts:</h3>
@@ -24,7 +23,6 @@
                 </select>
             </form>
         </div>
-
 
         <div id="hosts-container" class="hosts-container">
             <!-- Os hosts selecionados aparecerão aqui -->
@@ -44,17 +42,21 @@
 
         </div>
 
-
-
     </div>
     <div class="linha"></div>
-
-    
-
 
     <div >
         <canvas id="grafico-disponibilidade"></canvas>
     </div>
+
+    <div class="linha"></div>
+    <div class="botão-salvar">
+        <button class="btn btn-primary" type="submit" >
+            <a href="{% url 'disponibilidade_selecionada' %}">Confirmar</a>
+        
+        </button>
+    </div>
+    <div class="linha"></div>
 
 
     <div class="trans_borde">
@@ -67,7 +69,8 @@
                          <th>Sonda</th>
                          <th>Localidade</th>
                          <th>Host</th>
-                         <th>Sensor</th>
+                         <th>Data Inicio</th>
+                         <th>Data final</th>
                          <th>Disponibilidade (%)</th>
                      </tr>
                  </thead>
@@ -79,7 +82,8 @@
                              <td>{{ item.sonda }}</td>
                              <td>{{ item.localidade }}</td>
                              <td>{{ item.NOME }}</td>
-                             <td>{{ item.SENSOR }}</td>
+                             <td>{{ item.hora_inicial }}</td>
+                             <td>{{ item.hora_final }}</td>
                              <td>{{ item.percent_availability }}</td>
                          </tr>
                             <script>
@@ -94,21 +98,7 @@
         </div>
     </div>
 
-    
-
     <script>
-        var teste = teste
-    </script>
-
-
-
-
-    
-
-    <script>
-
-
-
 
 
         function criarGraficoDisponibilidade() {
@@ -152,13 +142,6 @@
 
         // Chame a função para criar o gráfico quando a página carregar
         window.onload = criarGraficoDisponibilidade;
-
-  
-        function obterDadosDisponibilidade() {
-            return [1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1]
-        }
-
-    
 
         function filtrarGrupos() {
             const input = document.getElementById('grupo-filtro');

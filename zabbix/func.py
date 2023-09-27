@@ -8,24 +8,14 @@ def data_inicial(valor):
     global datainit
     datainit = valor
    
-    
-
 def data_final(valor):
     global datafim
     datafim = valor
    
-    
-
-
-
 def recebe_host(host):
     global host_dispo
     host_dispo = host
     
-   
-
- 
-
 def disponibilidade():
 
 
@@ -49,9 +39,6 @@ def disponibilidade():
     data_inicio=time.mktime(datetime.strptime(inicio, "%d/%m/%Y %H:%M").timetuple())
     data_fim=time.mktime(datetime.strptime(fim, "%d/%m/%Y %H:%M").timetuple())
 
-
-
-    
     avail_data = []
 
     hosts = zapi.host.get(output=["hostid","name"],selectGroups="extend", selectTags="extend", hostids=host_dispo, selectInterfaces="extend")
@@ -66,7 +53,6 @@ def disponibilidade():
         if len(item) > 0:
             item_id= item[0]["itemid"]
             history = zapi.history.get(itemids=item_id, time_from=int(data_inicio), time_till=int(data_fim))
-            print(history)
             values = [int(historico["value"]) for historico in history]  # Lista dos valores histórico
             quantidade_history = len(history)
             
@@ -100,12 +86,12 @@ def disponibilidade():
                                     'ambiente': ambiente,
                                     'SENSOR': 'Ping',
                                     'percent_availability': primeiros_digitos,
-                                    'valor' : values
-                                    
-
+                                    'valor' : values,
+                                    'hora_inicial' : datainit,
+                                    'hora_final' : datafim
                                 })
-                                print(f"{host_name}, {host_id}, {primeiros_digitos}")
-                                print(avail_data)
+                                print(f"{host_name}, {host_id}, {primeiros_digitos}, {datainit}, {datafim}")
+                          
 
     return avail_data
                                     
