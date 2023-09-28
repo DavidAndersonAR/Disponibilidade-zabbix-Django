@@ -61,49 +61,108 @@
 
     <div class="trans_borde">
         <div class="table-responsive">
-             <table class="table table-striped" id="myTable">
-                 <thead>
-                     <tr>
-                         <th>ID</th>
-                         <th>Ambiente</th>
-                         <th>Sonda</th>
-                         <th>Localidade</th>
-                         <th>Host</th>
-                         <th>Data Inicio</th>
-                         <th>Data final</th>
-                         <th>Disponibilidade (%)</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     {% for item in avail_data %}
-                         <tr>
-                             <td>{{ item.id }}</td>
-                             <td>{{ item.ambiente }}</td>
-                             <td>{{ item.sonda }}</td>
-                             <td>{{ item.localidade }}</td>
-                             <td>{{ item.NOME }}</td>
-                             <td>{{ item.hora_inicial }}</td>
-                             <td>{{ item.hora_final }}</td>
-                             <td>{{ item.percent_availability }}</td>
-                         </tr>
-                            <script>
-                                var teste = {{item.valor}}
-                                console.log(teste)
-                            </script>
-                        
-                     {% endfor %}
-                 </tbody>
-                </table>
-            </div>
+            <table class="table table-striped" id="myTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ambiente</th>
+                        <th>Sonda</th>
+                        <th>Localidade</th>
+                        <th>Host</th>
+                        <th>Data Inicio</th>
+                        <th>Data final</th>
+                        <th>Disponibilidade (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in avail_data %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.ambiente }}</td>
+                            <td>{{ item.sonda }}</td>
+                            <td>{{ item.localidade }}</td>
+                            <td>{{ item.NOME }}</td>
+                            <td>{{ item.hora_inicial }}</td>
+                            <td>{{ item.hora_final }}</td>
+                            <td>{{ item.percent_availability }}</td>
+                        </tr>
+                        <script>
+                            var teste = {{item.valor}}
+                            console.log(teste)
+                        </script>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="trans_borde">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Horario: </th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                
+                <tbody>               
+                    {% for data in horario_data %}
+                        <tr>
+                            <td>{{ data.horario }}</td>
+                            <td>{{ data.status }}</td>
+                        </tr>
+                        <script>
+                            var data_js = {{data.horaio_grafico}}
+                            console.log(data_js)
+                        </script>
+                    {% endfor %}   
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
 
+        var datasEmString = data_js;
+
+        console.log(datasEmString);
+
+        // Array para armazenar objetos Date
+        const datas = [];
+
+        // Converter as datas de string para objetos Date
+        for (let i = 0; i < datasEmString.length; i++) {
+        const dataString = datasEmString[i];
+        const dataObjeto = new Date(dataString);
+        
+        // Verificar se a conversão foi bem-sucedida antes de adicionar ao array
+        if (!isNaN(dataObjeto.getTime())) {
+            datas.push(dataObjeto);
+        } else {
+            console.log(`A data "${dataString}" não é válida.`);
+        }
+        }
+
+        // Exemplo de como acessar as datas no array
+        for (let i = 0; i < datas.length; i++) {
+        console.log('Data:', datas[i].toLocaleDateString('pt-BR'));
+}
+
+
+
+
+
+
+
+
+
 
         function criarGraficoDisponibilidade() {
             const dados = teste;
-            const labels = dados.map((_, index) => `Hora ${index + 1}`);
+            const labels = datas_formatadas
+            // const labels = dados.map((_, index) => `Hora ${index + 1}`);
             
             const ctx = document.getElementById('grafico-disponibilidade').getContext('2d');
             new Chart(ctx, {

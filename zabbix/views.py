@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from pyzabbix import ZabbixAPI
-from zabbix.func import recebe_host, disponibilidade, data_final, data_inicial
+from zabbix.func import recebe_host, disponibilidade, data_final, data_inicial, horario_disponibilidade
 from datetime import datetime
 
 
@@ -113,10 +113,13 @@ def disponibilidade_selecionada(request):
 
     grupos = zapi.hostgroup.get(output=["name", "groupid"])
     avail_data = disponibilidade()
+    horario_data = horario_disponibilidade()
     contexto = {
         "avail_data" : avail_data,  
-        "grupos" : grupos   
+        "grupos" : grupos,
+        "horario_data" : horario_data
     }
+    print(avail_data)
    
     return render(request, "hosts.html", contexto)
     
