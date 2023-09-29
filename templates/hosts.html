@@ -99,7 +99,7 @@
 
     <div class="trans_borde">
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" style="width: 150px;">
                 <thead>
                     <tr>
                         <th>Horario: </th>
@@ -124,45 +124,11 @@
     </div>
 
     <script>
-
-        var datasEmString = data_js;
-
-        console.log(datasEmString);
-
-        // Array para armazenar objetos Date
-        const datas = [];
-
-        // Converter as datas de string para objetos Date
-        for (let i = 0; i < datasEmString.length; i++) {
-        const dataString = datasEmString[i];
-        const dataObjeto = new Date(dataString);
-        
-        // Verificar se a conversão foi bem-sucedida antes de adicionar ao array
-        if (!isNaN(dataObjeto.getTime())) {
-            datas.push(dataObjeto);
-        } else {
-            console.log(`A data "${dataString}" não é válida.`);
-        }
-        }
-
-        // Exemplo de como acessar as datas no array
-        for (let i = 0; i < datas.length; i++) {
-        console.log('Data:', datas[i].toLocaleDateString('pt-BR'));
-}
-
-
-
-
-
-
-
-
-
-
+ 
         function criarGraficoDisponibilidade() {
             const dados = teste;
-            const labels = datas_formatadas
-            // const labels = dados.map((_, index) => `Hora ${index + 1}`);
+            //const labels = datas_formatadas
+            const labels = dados.map((_, index) => `Hora ${index + 1}`);
             
             const ctx = document.getElementById('grafico-disponibilidade').getContext('2d');
             new Chart(ctx, {

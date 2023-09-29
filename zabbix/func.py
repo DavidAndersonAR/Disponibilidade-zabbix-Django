@@ -21,12 +21,12 @@ def disponibilidade():
 
 
     try:
-        zapi = ZabbixAPI("http://10.71.1.69/zabbix")
-        zapi.login("Admin", "26143024")
-      
+        zapi = ZabbixAPI("http://seu servidor do zabbix/zabbix")
+        zapi.login("Admin", "zabbix")
+        
+    except Exception as e:
+        print("Erro ao fazer login:", e)
 
-    except Exception as erro:
-     print(erro)
 
 
     #data desejada
@@ -53,7 +53,7 @@ def disponibilidade():
 
         #DISPONIBILIDADE
         if len(item) > 0:
-            item_id= item[0]["itemid"]
+            item_id= item[1]["itemid"]
             history = zapi.history.get(itemids=item_id, time_from=int(data_inicio), time_till=int(data_fim))
   
 
@@ -84,7 +84,7 @@ def disponibilidade():
 
                                 avail_data.append({
                                     'id' : host_id,
-                                    'sonda': "ENEL_BR_RJ",
+                                    'sonda': "ZABBIX",
                                     'localidade': localidade,
                                     'NOME': host_name,
                                     'ambiente': ambiente,
@@ -104,11 +104,12 @@ def disponibilidade():
 def horario_disponibilidade():
     
     try:
-        zapi = ZabbixAPI("http://10.71.1.69/zabbix")
-        zapi.login("Admin", "26143024")
+        zapi = ZabbixAPI("http://seu servidor do zabbix/zabbix")
+        zapi.login("Admin", "zabbix")
+        
+    except Exception as e:
+        print("Erro ao fazer login:", e)
 
-    except Exception as erro:
-     print(erro)
 
     #data desejada
     inicio=(datetime.strptime(datainit,'%d/%m/%Y %H:%M')).strftime("%d/%m/%Y %H:%M")
@@ -130,7 +131,7 @@ def horario_disponibilidade():
 
         #DISPONIBILIDADE
         if len(item) > 0:
-            item_id= item[0]["itemid"]
+            item_id= item[1]["itemid"]
             history = zapi.history.get(itemids=item_id, time_from=int(data_inicio), time_till=int(data_fim))
             for horario in history:
                 data = horario["clock"]
@@ -169,7 +170,7 @@ def horario_disponibilidade():
                 "horaio_grafico" : datas_formatadas
             })
 
-            print(data_status)
+            print(f" Data status {data_status}")
            
 
     return data_status

@@ -26,4 +26,5 @@ urlpatterns = [
     path('', hosts_por_grupo, name='hosts_por_grupo'),
     path('api/obter_hosts_por_grupo/<str:grupo>/', obter_hosts_por_grupo, name='obter_hosts_por_grupo'),
     path('disponibilidade_selecionada/', disponibilidade_selecionada, name='disponibilidade_selecionada'),
+  
 ]

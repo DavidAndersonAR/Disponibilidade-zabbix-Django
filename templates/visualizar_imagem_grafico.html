@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exibir Gráfico do Zabbix</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<body>
+    <canvas id="grafico"></canvas>
+
+    <script>
+        const graphData = {
+            "jsonrpc": "2.0",
+            "result": [
+                {
+                    "graphid": "30918",
+                    "name": "Ping",
+                    "width": "900",
+                    "height": "200",
+                    "yaxismin": "0",
+                    "yaxismax": "100",
+                    "templateid": "28229",
+                    "show_work_period": "1",
+                    "show_triggers": "1",
+                    "graphtype": "0",
+                    "show_legend": "1",
+                    "show_3d": "0",
+                    "percent_left": "0",
+                    "percent_right": "0",
+                    "ymin_type": "0",
+                    "ymax_type": "0",
+                    "ymin_itemid": "0",
+                    "ymax_itemid": "0",
+                    "flags": "0",
+                    "uuid": ""
+                }
+            ],
+            "id": 1
+        };
+
+        const dados = [
+            { timestamp: 1632726000, valor: 30 },
+            { timestamp: 1632727200, valor: 50 },
+            { timestamp: 1632728400, valor: 70 },
+            // ... mais dados ...
+        ];
+
+        // Função para obter os dados das últimas duas horas
+        function obterDadosUltimasDuasHoras(dados) {
+            const agora = Math.floor(Date.now() / 1000);  // Timestamp atual
+            const duasHorasAtras = agora - (2 * 60 * 60);  // Timestamp de duas horas atrás
+
+            return dados.filter(item => item.timestamp >= duasHorasAtras && item.timestamp <= agora);
+        }
+
+        // Obtenha apenas os dados das últimas duas horas
+        const dadosUltimasDuasHoras = obterDadosUltimasDuasHoras(dados);
+
+        // Extrai os rótulos e valores dos dados filtrados
+        const labels = dadosUltimasDuasHoras.map(item => item.timestamp);
+        const valores = dadosUltimasDuasHoras.map(item => item.valor);
+
+        const ctx = document.getElementById('grafico').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Valores do Gráfico',
+                    data: valores,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        labels: {
+                            title: {
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
